@@ -18,13 +18,19 @@ class GameEngine {
     // Lets start with counting the amounts of each type
     final dieTypeCounts = <DieSide, int>{};
 
-    // The cards 💎 and 🪙 get an additional count
+    // The "bonus" type 💎 and 🪙 get an additional count
+    var bonusCount = 0;
     if (card == "💎" || card == "🪙") {
       dieTypeCounts[card] = 1;
+      bonusCount++;
     }
 
     for (final die in dice) {
       dieTypeCounts[die] = (dieTypeCounts[die] ?? 0) + 1;
+
+      if (die == "💎" || die == "🪙") {
+        bonusCount++;
+      }
     }
 
     // Then calculate the value for each type
@@ -32,8 +38,11 @@ class GameEngine {
         (dieSide, count) => MapEntry(dieSide, countValueTable[count] ?? 0));
 
     // And aggregate to single value
-    final value =
+    var value =
         dieTypeValues.values.reduce((value, element) => value + element);
+
+    // Each bonus type is worth 100 points, so we add that
+    value += bonusCount * 100;
 
     return value;
   }

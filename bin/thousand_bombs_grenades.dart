@@ -28,8 +28,14 @@ void main(List<String> arguments) {
         "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");
   }
 
-  final dice = ["🐒", "🐒", "🐒", "🐒", "🦜", "🦜", "🦜", "🦜"];
-  final card = "💎";
+  var dice = ["🐒", "🐒", "🐒", "🐒", "🦜", "🦜", "🦜", "🦜"];
+  var card = "💎";
+
+  print(
+      "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");
+
+  dice = ["💀", "💀", "💀", "🐒", "🦜", "🦜", "🦜", "🦜"];
+  card = "💎";
 
   print(
       "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");

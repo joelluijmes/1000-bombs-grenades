@@ -3,7 +3,7 @@ import 'dart:math';
 /// Represents a card deck with following options:
 /// - Treasure Island: 🏝️💰
 /// - Skull: 💀
-/// - Watchman: 💂‍♂️⚔️
+/// - Watchman: 💂‍♂️🗡️
 /// - Pirate Ship: ⛵🏴‍☠️
 /// - Gold Coin: 🪙
 /// - Diamond: 💎
@@ -32,7 +32,7 @@ class CardDeck {
     for (var i = 0; i < 10; i++) {
       cards.add("🏝️💰");
       cards.add("💀");
-      cards.add("💂‍♂️⚔️");
+      cards.add("💂‍♂️🗡️");
       cards.add("⛵🏴‍☠️");
       cards.add("🪙");
       cards.add("💎");

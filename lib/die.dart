@@ -1,14 +1,14 @@
 import 'dart:math';
 
-/// Represents a game die with six sides: 💎, 🪙, 🐒, 🦜, ⚔️, ☠️
+/// Represents a game die with six sides: 💎, 🪙, 🐒, 🦜, 🗡️, 💀
 class Die {
   final sides = const [
     "💎",
     "🪙",
     "🐒",
     "🦜",
-    "⚔️",
-    "☠️",
+    "🗡️",
+    "💀",
   ];
 
   final Random _random;

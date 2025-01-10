@@ -34,8 +34,8 @@ Here are the tables with descriptions:
 | Gold coin | 🪙    | Counts both as individual symbol and in combinations |
 | Monkey    | 🐒    | Can be combined with parrots as one type             |
 | Parrot    | 🦜    | Can be combined with monkeys as one type             |
-| Sword     | ⚔️    | Basic symbol for combinations                        |
-| Skull     | ☠️    | Used for Skull Island mechanic, can end your turn    |
+| Sword     | 🗡️    | Basic symbol for combinations                        |
+| Skull     | 💀    | Used for Skull Island mechanic, can end your turn    |
 
 ## Card Types
 
@@ -44,7 +44,7 @@ Here are the tables with descriptions:
 | Treasure Island | 🏝️💰  | After a roll, player may set aside one or more dice and reroll others. These set aside dice must stay on this card and cannot be rerolled. If rolling a third skull, turn ends immediately and player only scores points from dice on this card |
 | Pirate          | 🏴‍☠️👑  | Doubles all points scored this turn. If player sails to Skull Island, other players lose 200 points per rolled skull                                                                                                                            |
 | Skull           | 💀    | Turn begins with 1-2 skulls. No bonus possible, increased chance of going to Skull Island                                                                                                                                                       |
-| Watchman        | 💂‍♂️⚔️  | Player may reroll one skull once per turn. If player has 3 skulls at any point, turn ends immediately                                                                                                                                           |
+| Watchman        | 💂‍♂️🗡️  | Player may reroll one skull once per turn. If player has 3 skulls at any point, turn ends immediately                                                                                                                                           |
 | Pirate Ship     | ⛵🏴‍☠️  | Must roll minimum shown number of swords to score any points. If achieved, receive bonus points indicated on card. If not achieved, score 0 points. Cannot sail to Skull Island                                                                 |
 | Gold Coin       | 🪙    | Turn begins with a gold coin that counts both individually and in combinations                                                                                                                                                                  |
 | Diamond         | 💎    | Turn begins with a diamond that counts both individually and in combinations                                                                                                                                                                    |

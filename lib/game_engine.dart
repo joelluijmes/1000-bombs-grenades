@@ -25,13 +25,31 @@ class GameEngine {
       bonusCount++;
     }
 
+    // Three skulls means end of turn -> 0 points 💀
+    // A card can also be a 💀
+    var skullCount = 0;
+    if (card == "💀") {
+      skullCount++;
+    }
+
     for (final die in dice) {
       dieTypeCounts[die] = (dieTypeCounts[die] ?? 0) + 1;
 
       if (die == "💎" || die == "🪙") {
         bonusCount++;
       }
+
+      if (die == "💀") {
+        skullCount++;
+      }
     }
+
+    if (skullCount >= 3) {
+      return -1;
+    }
+    // TODO: Go to skull island
+    // else if (skullCount > 3) {
+    // }
 
     // Then calculate the value for each type
     final dieTypeValues = dieTypeCounts.map(

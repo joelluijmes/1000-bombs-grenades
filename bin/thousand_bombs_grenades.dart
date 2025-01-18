@@ -4,7 +4,7 @@ import 'package:thousand_bombs_grenades/game/game.dart';
 import 'package:thousand_bombs_grenades/models/models.dart';
 
 void main(List<String> arguments) {
-  final random = Random(42);
+  final random = Random(1);
 
   print("Throwing 10 times to illustrate our die works:");
   final die = Die(random);
@@ -33,4 +33,12 @@ void main(List<String> arguments) {
 
     print("Value of Card=$card, Dice=$sides, Value=$value");
   }
+
+  final players = [
+    Player("Player 1"),
+    Player("Player 2"),
+  ];
+
+  final gameEngine = GameEngine(players, random);
+  gameEngine.startTurn();
 }

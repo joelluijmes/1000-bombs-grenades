@@ -28,7 +28,7 @@ class Turn {
   Turn(this.state);
 
   int calculateValue() {
-    if (_calculateIsDead()) {
+    if (isDead()) {
       return deadValue;
     }
 
@@ -93,7 +93,7 @@ class Turn {
   }
 
   /// Calculates whether the skull threshold has been met
-  bool _calculateIsDead() {
+  bool isDead() {
     var skullCount = _countSkulls();
 
     return skullCount >= skullThreshold;

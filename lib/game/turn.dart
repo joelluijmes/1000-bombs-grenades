@@ -1,8 +1,11 @@
-import 'card_deck.dart';
-import 'die.dart';
+import 'package:thousand_bombs_grenades/models/turn_state.dart';
 
-class TurnState {
-  static final bonusSymbols = {DieSides.coin.symbol, DieSides.diamond.symbol};
+import '../models/card_type.dart';
+import '../models/die.dart';
+
+/// Game logic regarding a specific turn e.g., calculate its value.
+class Turn {
+  static final bonusSymbols = {DieType.coin.symbol, DieType.diamond.symbol};
   static const bonusValue = 100;
   static const skullThreshold = 3;
 
@@ -16,16 +19,9 @@ class TurnState {
     8: 4000,
   };
 
-  final Dice heldDice;
+  final TurnState state;
 
-  final Dice rolledDice;
-
-  final CardType card;
-
-  TurnState(CardDeck deck, List<Die> dice)
-      : card = deck.draw(),
-        heldDice = [],
-        rolledDice = dice.map((die) => die.roll()).toList();
+  Turn(this.state);
 
   int calculateValue() {
     if (_calculateIsDead()) {
@@ -40,19 +36,20 @@ class TurnState {
 
   /// Calculates the value of bonus symbols
   int _calculateBonusValue() {
-    var bonusCount = bonusSymbols.contains(card.symbol) ? 1 : 0;
-    bonusCount +=
-        rolledDice.where((side) => bonusSymbols.contains(side.symbol)).length;
+    var bonusCount = bonusSymbols.contains(state.card.symbol) ? 1 : 0;
+    bonusCount += state.rolledDice
+        .where((side) => bonusSymbols.contains(side.symbol))
+        .length;
 
     return bonusCount * bonusValue;
   }
 
   /// Calculates the value of regular combination symbols
   int _calculateCombinationValue() {
-    final dieTypeCounts = <DieSides, int>{};
+    final dieTypeCounts = <DieType, int>{};
 
-    for (var side in rolledDice) {
-      if (side != DieSides.skull) {
+    for (var side in state.rolledDice) {
+      if (side != DieType.skull) {
         dieTypeCounts[side] = (dieTypeCounts[side] ?? 0) + 1;
       }
     }
@@ -70,8 +67,9 @@ class TurnState {
 
   /// Calculates whether the skull threshold has been met
   bool _calculateIsDead() {
-    var skullCount = card == CardType.skull ? 1 : 0;
-    skullCount += rolledDice.where((side) => side == DieSides.skull).length;
+    var skullCount = state.card == CardType.skull ? 1 : 0;
+    skullCount +=
+        state.rolledDice.where((side) => side == DieType.skull).length;
 
     return skullCount >= skullThreshold;
   }

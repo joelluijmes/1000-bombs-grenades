@@ -1,8 +1,7 @@
 import 'dart:math';
 
-import 'package:thousand_bombs_grenades/card_deck.dart';
-import 'package:thousand_bombs_grenades/die.dart';
-import 'package:thousand_bombs_grenades/game_engine.dart';
+import 'package:thousand_bombs_grenades/game/game.dart';
+import 'package:thousand_bombs_grenades/models/models.dart';
 
 void main(List<String> arguments) {
   final random = Random(42);
@@ -24,10 +23,12 @@ void main(List<String> arguments) {
   final dice = List.filled(8, Die(random));
 
   for (var i = 0; i < 10; i++) {
-    final turn = TurnState(deck, dice);
+    final card = deck.draw();
+    final sides = dice.map((die) => die.roll()).toList();
 
-    final sides = turn.rolledDice;
-    final card = turn.card;
+    final turnState = TurnState(card, sides);
+    final turn = Turn(turnState);
+
     final value = turn.calculateValue();
 
     print("Value of Card=$card, Dice=$sides, Value=$value");

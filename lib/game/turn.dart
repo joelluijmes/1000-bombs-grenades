@@ -8,6 +8,7 @@ class Turn {
   static final bonusSymbols = {DieType.coin.symbol, DieType.diamond.symbol};
   static const bonusValue = 100;
   static const skullThreshold = 3;
+  static const deadValue = -1;
 
   /// Lookup table which yields the points based on the amount of occurrences.
   static const countValueTable = {
@@ -25,7 +26,7 @@ class Turn {
 
   int calculateValue() {
     if (_calculateIsDead()) {
-      return -1;
+      return deadValue;
     }
 
     final bonusValue = _calculateBonusValue();

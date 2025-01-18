@@ -1,20 +1,33 @@
 import 'dart:math';
 
+typedef Dice = List<DieSides>;
+
+enum DieSides {
+  diamond("💎"),
+  coin("🪙"),
+  monkey("🐒"),
+  parrot("🦜"),
+  sword("🗡️"),
+  skull("💀");
+
+  const DieSides(this.symbol);
+
+  static DieSides bySymbol(String symbol) {
+    return DieSides.values.firstWhere((side) => side.symbol == symbol);
+  }
+
+  final String symbol;
+
+  @override
+  String toString() => symbol;
+}
+
 /// Represents a game die with six sides: 💎, 🪙, 🐒, 🦜, 🗡️, 💀
 class Die {
-  final sides = const [
-    "💎",
-    "🪙",
-    "🐒",
-    "🦜",
-    "🗡️",
-    "💀",
-  ];
-
   final Random _random;
 
-  Die([int? seed]) : _random = Random(seed);
+  Die([Random? random]) : _random = random ?? Random();
 
   /// Returns one of the six sides of the die.
-  String roll() => sides[_random.nextInt(sides.length)];
+  DieSides roll() => DieSides.values[_random.nextInt(DieSides.values.length)];
 }

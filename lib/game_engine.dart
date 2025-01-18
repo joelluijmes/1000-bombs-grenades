@@ -1,6 +1,5 @@
-typedef DieSide = String;
-typedef Card = String;
-typedef Dice = List<DieSide>;
+import 'card_deck.dart';
+import 'die.dart';
 
 class GameEngine {
   /// Lookup table which yields the points based on the amount of occurrences.
@@ -14,32 +13,32 @@ class GameEngine {
   };
 
   /// Calculates the value of the current turn.
-  int calculateValue(Card card, Dice dice) {
+  int calculateValue(CardType card, Dice dice) {
     // Lets start with counting the amounts of each type
-    final dieTypeCounts = <DieSide, int>{};
+    final dieTypeCounts = <DieSides, int>{};
 
     // The "bonus" type 💎 and 🪙 get an additional count
     var bonusCount = 0;
-    if (card == "💎" || card == "🪙") {
-      dieTypeCounts[card] = 1;
+    if (card.symbol == "💎" || card.symbol == "🪙") {
+      dieTypeCounts[DieSides.bySymbol(card.symbol)] = 1;
       bonusCount++;
     }
 
     // Three skulls means end of turn -> 0 points 💀
     // A card can also be a 💀
     var skullCount = 0;
-    if (card == "💀") {
+    if (card.symbol == "💀") {
       skullCount++;
     }
 
     for (final die in dice) {
       dieTypeCounts[die] = (dieTypeCounts[die] ?? 0) + 1;
 
-      if (die == "💎" || die == "🪙") {
+      if (die.symbol == "💎" || die.symbol == "🪙") {
         bonusCount++;
       }
 
-      if (die == "💀") {
+      if (die.symbol == "💀") {
         skullCount++;
       }
     }

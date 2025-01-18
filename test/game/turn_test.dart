@@ -83,6 +83,32 @@ void main() {
         );
       });
 
+      group("calculate with animal card", () {
+        testTurn(
+          description: 'returns 600 for 5🦜 + 3🐒 without animal card',
+          state: TurnState(
+            CardType.treasureIsland,
+            [
+              ...List.filled(5, DieType.parrot),
+              ...List.filled(3, DieType.monkey)
+            ],
+          ),
+          expectedValue: 600,
+        );
+
+        testTurn(
+          description: 'returns 8000 for 5🦜 + 3🐒 with animal card',
+          state: TurnState(
+            CardType.animals,
+            [
+              ...List.filled(5, DieType.parrot),
+              ...List.filled(3, DieType.monkey)
+            ],
+          ),
+          expectedValue: 4000,
+        );
+      });
+
       group("calculate bonus + combination value", () {
         testTurn(
           description: 'returns 1100 for 5💎 + 3🐒',

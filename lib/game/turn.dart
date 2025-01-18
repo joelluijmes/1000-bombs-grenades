@@ -6,6 +6,7 @@ import '../models/die.dart';
 /// Game logic regarding a specific turn e.g., calculate its value.
 class Turn {
   static final bonusSymbols = {DieType.coin.symbol, DieType.diamond.symbol};
+  static final animalsSymbols = {DieType.parrot.symbol, DieType.monkey.symbol};
   static const bonusValue = 100;
   static const skullThreshold = 3;
   static const deadValue = -1;
@@ -48,9 +49,18 @@ class Turn {
   /// Calculates the value of regular combination symbols
   int _calculateCombinationValue() {
     final dieTypeCounts = <DieType, int>{};
+    var animalCounts = 0;
 
     for (var side in state.rolledDice) {
-      if (side != DieType.skull) {
+      if (side == DieType.skull) {
+        continue;
+      }
+
+      // When the animal card is drawn, we count monkeys and parrots together
+      if (state.card == CardType.animals &&
+          animalsSymbols.contains(side.symbol)) {
+        animalCounts++;
+      } else {
         dieTypeCounts[side] = (dieTypeCounts[side] ?? 0) + 1;
       }
     }
@@ -61,7 +71,10 @@ class Turn {
 
     // And aggregate to single value
     var value =
-        dieTypeValues.values.reduce((value, element) => value + element);
+        dieTypeValues.values.fold(0, (value, element) => value + element);
+
+    // And finally add the animal count (when applicable)
+    value += countValueTable[animalCounts] ?? 0;
 
     return value;
   }

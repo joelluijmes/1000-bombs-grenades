@@ -1,7 +1,11 @@
 import 'card_deck.dart';
 import 'die.dart';
 
-class GameEngine {
+class TurnState {
+  static final bonusSymbols = {DieSides.coin.symbol, DieSides.diamond.symbol};
+  static const bonusValue = 100;
+  static const skullThreshold = 3;
+
   /// Lookup table which yields the points based on the amount of occurrences.
   static const countValueTable = {
     3: 100,
@@ -12,45 +16,48 @@ class GameEngine {
     8: 4000,
   };
 
-  /// Calculates the value of the current turn.
-  int calculateValue(CardType card, Dice dice) {
-    // Lets start with counting the amounts of each type
-    final dieTypeCounts = <DieSides, int>{};
+  final Dice heldDice;
 
-    // The "bonus" type 💎 and 🪙 get an additional count
-    var bonusCount = 0;
-    if (card.symbol == "💎" || card.symbol == "🪙") {
-      dieTypeCounts[DieSides.bySymbol(card.symbol)] = 1;
-      bonusCount++;
-    }
+  final Dice rolledDice;
 
-    // Three skulls means end of turn -> 0 points 💀
-    // A card can also be a 💀
-    var skullCount = 0;
-    if (card.symbol == "💀") {
-      skullCount++;
-    }
+  final CardType card;
 
-    for (final die in dice) {
-      dieTypeCounts[die] = (dieTypeCounts[die] ?? 0) + 1;
+  TurnState(CardDeck deck, List<Die> dice)
+      : card = deck.draw(),
+        heldDice = [],
+        rolledDice = dice.map((die) => die.roll()).toList();
 
-      if (die.symbol == "💎" || die.symbol == "🪙") {
-        bonusCount++;
-      }
-
-      if (die.symbol == "💀") {
-        skullCount++;
-      }
-    }
-
-    if (skullCount >= 3) {
+  int calculateValue() {
+    if (_calculateIsDead()) {
       return -1;
     }
-    // TODO: Go to skull island
-    // else if (skullCount > 3) {
-    // }
 
-    // Then calculate the value for each type
+    final bonusValue = _calculateBonusValue();
+    final combinationValue = _calculateCombinationValue();
+
+    return bonusValue + combinationValue;
+  }
+
+  /// Calculates the value of bonus symbols
+  int _calculateBonusValue() {
+    var bonusCount = bonusSymbols.contains(card.symbol) ? 1 : 0;
+    bonusCount +=
+        rolledDice.where((side) => bonusSymbols.contains(side.symbol)).length;
+
+    return bonusCount * bonusValue;
+  }
+
+  /// Calculates the value of regular combination symbols
+  int _calculateCombinationValue() {
+    final dieTypeCounts = <DieSides, int>{};
+
+    for (var side in rolledDice) {
+      if (side != DieSides.skull) {
+        dieTypeCounts[side] = (dieTypeCounts[side] ?? 0) + 1;
+      }
+    }
+
+    // Determine combinations value per type
     final dieTypeValues = dieTypeCounts.map(
         (dieSide, count) => MapEntry(dieSide, countValueTable[count] ?? 0));
 
@@ -58,9 +65,14 @@ class GameEngine {
     var value =
         dieTypeValues.values.reduce((value, element) => value + element);
 
-    // Each bonus type is worth 100 points, so we add that
-    value += bonusCount * 100;
-
     return value;
+  }
+
+  /// Calculates whether the skull threshold has been met
+  bool _calculateIsDead() {
+    var skullCount = card == CardType.skull ? 1 : 0;
+    skullCount += rolledDice.where((side) => side == DieSides.skull).length;
+
+    return skullCount >= skullThreshold;
   }
 }

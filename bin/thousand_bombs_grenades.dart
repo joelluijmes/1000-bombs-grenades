@@ -20,31 +20,16 @@ void main(List<String> arguments) {
   }
 
   print("Trying to calculate some values");
-  final gameEngine = GameEngine();
 
-  for (var i = 1; i < 8; i++) {
-    final dice = List.filled(i, DieSides.diamond);
-    final card = CardType.diamond;
+  final dice = List.filled(8, Die(random));
 
-    print(
-        "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");
+  for (var i = 0; i < 10; i++) {
+    final turn = TurnState(deck, dice);
+
+    final sides = turn.rolledDice;
+    final card = turn.card;
+    final value = turn.calculateValue();
+
+    print("Value of Card=$card, Dice=$sides, Value=$value");
   }
-
-  var dice = [
-    ...List.filled(4, DieSides.monkey),
-    ...List.filled(4, DieSides.parrot)
-  ];
-  var card = CardType.diamond;
-
-  print(
-      "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");
-
-  dice = [
-    ...List.filled(3, DieSides.skull),
-    ...List.filled(5, DieSides.parrot)
-  ];
-  card = CardType.diamond;
-
-  print(
-      "Value of Card=$card, Dice=$dice: ${gameEngine.calculateValue(card, dice)}");
 }

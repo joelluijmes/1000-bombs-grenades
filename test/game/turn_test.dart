@@ -48,8 +48,8 @@ void main() {
 
           testTurn(
             description: 'returns $expectedValue for $count monkeys',
-            state: TurnState(
-                CardType.treasureIsland, List.filled(count, DieType.monkey)),
+            state:
+                TurnState(CardType.skull, List.filled(count, DieType.monkey)),
             expectedValue: expectedValue,
           );
         }
@@ -85,35 +85,35 @@ void main() {
 
       group("calculate with animal card", () {
         testTurn(
-          description: 'returns 600 for 5🦜 + 3🐒 without animal card',
+          description: 'returns 600 for 4🦜 + 3🐒 without animal card',
           state: TurnState(
             CardType.treasureIsland,
             [
-              ...List.filled(5, DieType.parrot),
+              ...List.filled(4, DieType.parrot),
               ...List.filled(3, DieType.monkey)
             ],
           ),
-          expectedValue: 600,
+          expectedValue: 300,
         );
 
         testTurn(
-          description: 'returns 8000 for 5🦜 + 3🐒 with animal card',
+          description: 'returns 2000 for 4🦜 + 3🐒 with animal card',
           state: TurnState(
             CardType.animals,
             [
-              ...List.filled(5, DieType.parrot),
+              ...List.filled(4, DieType.parrot),
               ...List.filled(3, DieType.monkey)
             ],
           ),
-          expectedValue: 4000,
+          expectedValue: 2000,
         );
       });
 
-      group("calculate bonus + combination value", () {
+      group("calculate bonus symbols + combination value", () {
         testTurn(
           description: 'returns 1100 for 5💎 + 3🐒',
           state: TurnState(
-            CardType.treasureIsland,
+            CardType.skull,
             [
               ...List.filled(5, DieType.diamond),
               ...List.filled(3, DieType.monkey)
@@ -132,6 +132,46 @@ void main() {
             ],
           ),
           expectedValue: 600,
+        );
+      });
+
+      group("calculate bonus when everything yields value", () {
+        testTurn(
+          description: 'returns 400 for 4🦜 + 4🐒 (no bonus) with skull card',
+          state: TurnState(
+            CardType.skull,
+            [
+              ...List.filled(4, DieType.parrot),
+              ...List.filled(4, DieType.monkey)
+            ],
+          ),
+          expectedValue: 400,
+        );
+
+        testTurn(
+          description:
+              'returns 900 (400 + 500) for 4🦜 + 4🐒 with treasure island (bonus)',
+          state: TurnState(
+            CardType.treasureIsland,
+            [
+              ...List.filled(4, DieType.parrot),
+              ...List.filled(4, DieType.monkey)
+            ],
+          ),
+          expectedValue: 900,
+        );
+
+        testTurn(
+          description:
+              'returns 4500 (400 + 500) for 4🦜 + 4🐒 with animals card (bonus)',
+          state: TurnState(
+            CardType.animals,
+            [
+              ...List.filled(4, DieType.parrot),
+              ...List.filled(4, DieType.monkey)
+            ],
+          ),
+          expectedValue: 4500,
         );
       });
     });

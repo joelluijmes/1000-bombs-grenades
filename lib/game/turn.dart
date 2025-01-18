@@ -7,9 +7,11 @@ import '../models/die.dart';
 class Turn {
   static final bonusSymbols = {DieType.coin.symbol, DieType.diamond.symbol};
   static final animalsSymbols = {DieType.parrot.symbol, DieType.monkey.symbol};
-  static const bonusValue = 100;
+  static const coinDiamondBonusValue = 100;
   static const skullThreshold = 3;
   static const deadValue = -1;
+  static const fullSetBonusValue = 500;
+  static const totalDiceCount = 8;
 
   /// Lookup table which yields the points based on the amount of occurrences.
   static const countValueTable = {
@@ -43,13 +45,13 @@ class Turn {
         .where((side) => bonusSymbols.contains(side.symbol))
         .length;
 
-    return bonusCount * bonusValue;
+    return bonusCount * coinDiamondBonusValue;
   }
 
   /// Calculates the value of regular combination symbols
   int _calculateCombinationValue() {
     final dieTypeCounts = <DieType, int>{};
-    var animalCounts = 0;
+    var animalCount = 0;
 
     for (var side in state.rolledDice) {
       if (side == DieType.skull) {
@@ -59,7 +61,7 @@ class Turn {
       // When the animal card is drawn, we count monkeys and parrots together
       if (state.card == CardType.animals &&
           animalsSymbols.contains(side.symbol)) {
-        animalCounts++;
+        animalCount++;
       } else {
         dieTypeCounts[side] = (dieTypeCounts[side] ?? 0) + 1;
       }
@@ -73,18 +75,35 @@ class Turn {
     var value =
         dieTypeValues.values.fold(0, (value, element) => value + element);
 
-    // And finally add the animal count (when applicable)
-    value += countValueTable[animalCounts] ?? 0;
+    // And add the animal count (when applicable)
+    value += countValueTable[animalCount] ?? 0;
+
+    // We are eligible for bonus when all dice contribute value
+    final contributingDiceCount = dieTypeCounts.entries.fold(
+        0,
+        (cur, entry) =>
+            cur + ((dieTypeValues[entry.key] ?? 0) > 0 ? entry.value : 0));
+
+    final noSkulls = _countSkulls() == 0;
+    if (noSkulls && contributingDiceCount + animalCount == totalDiceCount) {
+      value += fullSetBonusValue;
+    }
 
     return value;
   }
 
   /// Calculates whether the skull threshold has been met
   bool _calculateIsDead() {
+    var skullCount = _countSkulls();
+
+    return skullCount >= skullThreshold;
+  }
+
+  int _countSkulls() {
     var skullCount = state.card == CardType.skull ? 1 : 0;
     skullCount +=
         state.rolledDice.where((side) => side == DieType.skull).length;
 
-    return skullCount >= skullThreshold;
+    return skullCount;
   }
 }

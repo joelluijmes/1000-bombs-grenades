@@ -2,7 +2,7 @@
 enum CardType {
   treasureIsland(
     "Treasure Island",
-    "🏝️💰",
+    "🏝️",
     "Set aside one or more dice and reroll others.",
   ),
 
@@ -14,13 +14,13 @@ enum CardType {
 
   watchman(
     "Watchman",
-    "💂‍♂️🗡️",
+    "💂‍♂️",
     "Reroll one skull once per turn.",
   ),
 
   pirateShip(
     "Pirate Ship",
-    "⛵🏴‍☠️",
+    "⛵",
     "Must roll minimum number of swords to score any points.",
   ),
 
@@ -38,7 +38,7 @@ enum CardType {
 
   animals(
     "Animals",
-    "🐒🦜",
+    "🐒",
     "Monkey and parrots count as one type.",
   );
 

@@ -27,11 +27,13 @@ class GameEngine {
     final turnState = TurnState(card, sides);
     final turn = Turn(turnState);
 
-    final value = turn.calculateValue();
-    print('[${state.currentPlayer.name}] Turn value $value');
+    print(turn.prettyFormat());
 
-    if (turn.isDead()) {
-      print('[${state.currentPlayer.name}] Died. Switching player..');
-    }
+    // final value = turn.calculateValue();
+    // print('[${state.currentPlayer.name}] Turn value $value');
+
+    // if (turn.isDead()) {
+    //   print('[${state.currentPlayer.name}] Died. Switching player..');
+    // }
   }
 }

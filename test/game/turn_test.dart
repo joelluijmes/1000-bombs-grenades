@@ -29,13 +29,19 @@ void main() {
       group("calculate is dead", () {
         testTurn(
           description: 'returns -1 with three skulls rolled',
-          state: TurnState(CardType.diamond, List.filled(3, DieType.skull)),
+          state: TurnState(
+            card: CardType.diamond,
+            dice: List.filled(3, DieType.skull),
+          ),
           expectedValue: deadValue,
         );
 
         testTurn(
           description: 'returns -1 with two skulls rolled and skull card',
-          state: TurnState(CardType.skull, List.filled(2, DieType.skull)),
+          state: TurnState(
+            card: CardType.skull,
+            dice: List.filled(2, DieType.skull),
+          ),
           expectedValue: deadValue,
         );
       });
@@ -47,8 +53,10 @@ void main() {
 
           testTurn(
             description: 'returns $expectedValue for $count monkeys',
-            state:
-                TurnState(CardType.skull, List.filled(count, DieType.monkey)),
+            state: TurnState(
+              card: CardType.skull,
+              dice: List.filled(count, DieType.monkey),
+            ),
             expectedValue: expectedValue,
           );
         }
@@ -58,7 +66,10 @@ void main() {
         for (final bonus in {DieType.diamond, DieType.coin}) {
           testTurn(
             description: 'returns 1000 for 5 $bonus',
-            state: TurnState(CardType.treasureIsland, List.filled(5, bonus)),
+            state: TurnState(
+              card: CardType.treasureIsland,
+              dice: List.filled(5, bonus),
+            ),
             expectedValue: 1000,
           );
         }
@@ -66,8 +77,8 @@ void main() {
         testTurn(
           description: 'adds bonus for diamond card',
           state: TurnState(
-            CardType.diamond,
-            [DieType.diamond, DieType.diamond],
+            card: CardType.diamond,
+            dice: [DieType.diamond, DieType.diamond],
           ),
           expectedValue: 300,
         );
@@ -75,8 +86,8 @@ void main() {
         testTurn(
           description: 'adds bonus for coin card',
           state: TurnState(
-            CardType.coin,
-            [DieType.coin, DieType.coin],
+            card: CardType.coin,
+            dice: [DieType.coin, DieType.coin],
           ),
           expectedValue: 300,
         );
@@ -86,8 +97,8 @@ void main() {
         testTurn(
           description: 'returns 600 for 4🦜 + 3🐒 without animal card',
           state: TurnState(
-            CardType.treasureIsland,
-            [
+            card: CardType.treasureIsland,
+            dice: [
               ...List.filled(4, DieType.parrot),
               ...List.filled(3, DieType.monkey)
             ],
@@ -98,8 +109,8 @@ void main() {
         testTurn(
           description: 'returns 2000 for 4🦜 + 3🐒 with animal card',
           state: TurnState(
-            CardType.animals,
-            [
+            card: CardType.animals,
+            dice: [
               ...List.filled(4, DieType.parrot),
               ...List.filled(3, DieType.monkey)
             ],
@@ -112,8 +123,8 @@ void main() {
         testTurn(
           description: 'returns 1100 for 5💎 + 3🐒',
           state: TurnState(
-            CardType.skull,
-            [
+            card: CardType.skull,
+            dice: [
               ...List.filled(5, DieType.diamond),
               ...List.filled(3, DieType.monkey)
             ],
@@ -124,8 +135,8 @@ void main() {
         testTurn(
           description: 'returns 600 for 3💎 + 3🐒 + diamond card',
           state: TurnState(
-            CardType.diamond,
-            [
+            card: CardType.diamond,
+            dice: [
               ...List.filled(3, DieType.diamond),
               ...List.filled(3, DieType.monkey)
             ],
@@ -138,8 +149,8 @@ void main() {
         testTurn(
           description: 'returns 400 for 4🦜 + 4🐒 (no bonus) with skull card',
           state: TurnState(
-            CardType.skull,
-            [
+            card: CardType.skull,
+            dice: [
               ...List.filled(4, DieType.parrot),
               ...List.filled(4, DieType.monkey)
             ],
@@ -151,8 +162,8 @@ void main() {
           description:
               'returns 900 (400 + 500) for 4🦜 + 4🐒 with treasure island (bonus)',
           state: TurnState(
-            CardType.treasureIsland,
-            [
+            card: CardType.treasureIsland,
+            dice: [
               ...List.filled(4, DieType.parrot),
               ...List.filled(4, DieType.monkey)
             ],
@@ -164,8 +175,8 @@ void main() {
           description:
               'returns 4500 (400 + 500) for 4🦜 + 4🐒 with animals card (bonus)',
           state: TurnState(
-            CardType.animals,
-            [
+            card: CardType.animals,
+            dice: [
               ...List.filled(4, DieType.parrot),
               ...List.filled(4, DieType.monkey)
             ],

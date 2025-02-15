@@ -13,6 +13,8 @@ class ConsoleUI {
     bool turnEnded = false;
 
     GameState state = _gameEngine.initializeGame([Player("Player 1")]);
+    final score = TurnLogic.calculateValue(state.turnState);
+    print(_prettyFormatTurn(state.turnState, score));
 
     while (!turnEnded) {
       final move = _getPlayerMove();

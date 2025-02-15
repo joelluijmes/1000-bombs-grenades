@@ -6,16 +6,12 @@ class TurnState {
 
   final List<DieType> dice;
 
-  TurnState(this.card, this.dice);
+  TurnState({required this.card, required this.dice});
 
-  factory TurnState.init(CardType card) {
-    return TurnState(card, []);
-  }
-
-  TurnState copyWith({CardType? card, List<DieType>? dice}) {
+  TurnState copyWith({List<DieType>? dice}) {
     return TurnState(
-      card ?? this.card,
-      dice ?? this.dice,
+      card: card,
+      dice: dice ?? this.dice,
     );
   }
 }

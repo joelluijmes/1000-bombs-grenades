@@ -6,17 +6,19 @@ import 'package:thousand_bombs_grenades/domain/domain.dart';
 class GameEngine {
   final Random _random;
 
-  final CardDeck _deck;
-
-  GameEngine([Random? random])
-      : _random = random ?? Random(),
-        _deck = CardDeck(random);
+  GameEngine([Random? random]) : _random = random ?? Random();
 
   GameState initializeGame(List<Player> players) {
-    final card = _deck.draw();
-    final turnState = TurnState.init(card);
+    final deck = CardDeck(_random);
+    final card = deck.draw();
+    final dice = List.generate(totalDiceCount, (_) => DieType.roll(_random));
+    final turnState = TurnState(card: card, dice: dice);
 
-    return GameState.init(players, turnState);
+    return GameState(
+        players: players,
+        currentPlayer: players.first,
+        deck: deck,
+        turnState: turnState);
   }
 
   /// Handles a single move

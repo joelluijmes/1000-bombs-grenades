@@ -1,3 +1,4 @@
+import 'package:thousand_bombs_grenades/game/game.dart';
 import 'package:thousand_bombs_grenades/models/turn_state.dart';
 
 import '../models/card_type.dart';
@@ -5,14 +6,6 @@ import '../models/die.dart';
 
 /// Game logic regarding a specific turn e.g., calculate its value.
 class Turn {
-  static final bonusSymbols = {DieType.coin.symbol, DieType.diamond.symbol};
-  static final animalsSymbols = {DieType.parrot.symbol, DieType.monkey.symbol};
-  static const coinDiamondBonusValue = 100;
-  static const skullThreshold = 3;
-  static const deadValue = -1;
-  static const fullSetBonusValue = 500;
-  static const totalDiceCount = 8;
-
   /// Lookup table which yields the points based on the amount of occurrences.
   static const countValueTable = {
     3: 100,
@@ -41,9 +34,8 @@ class Turn {
   /// Calculates the value of bonus symbols
   int _calculateBonusValue() {
     var bonusCount = bonusSymbols.contains(state.card.symbol) ? 1 : 0;
-    bonusCount += state.rolledDice
-        .where((side) => bonusSymbols.contains(side.symbol))
-        .length;
+    bonusCount +=
+        state.dice.where((side) => bonusSymbols.contains(side.symbol)).length;
 
     return bonusCount * coinDiamondBonusValue;
   }
@@ -53,7 +45,7 @@ class Turn {
     final dieTypeCounts = <DieType, int>{};
     var animalCount = 0;
 
-    for (var side in state.rolledDice) {
+    for (var side in state.dice) {
       if (side == DieType.skull) {
         continue;
       }
@@ -101,8 +93,7 @@ class Turn {
 
   int _countSkulls() {
     var skullCount = state.card == CardType.skull ? 1 : 0;
-    skullCount +=
-        state.rolledDice.where((side) => side == DieType.skull).length;
+    skullCount += state.dice.where((side) => side == DieType.skull).length;
 
     return skullCount;
   }
@@ -142,8 +133,8 @@ class Turn {
     // Dice values - using fixed width spacing for emojis
     buffer.write(" " * 8);
     for (int i = 0; i < totalDiceCount; i++) {
-      if (i < state.rolledDice.length) {
-        buffer.write(' ${state.rolledDice[i].symbol}     ');
+      if (i < state.dice.length) {
+        buffer.write(' ${state.dice[i].symbol}     ');
       } else {
         buffer.write('       ');
       }

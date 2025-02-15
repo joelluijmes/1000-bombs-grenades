@@ -4,7 +4,7 @@ import 'models.dart';
 class TurnState {
   final CardType card;
 
-  final Dice rolledDice;
+  final List<DieType> dice;
 
-  TurnState(this.card, this.rolledDice);
+  TurnState(this.card, this.dice);
 }

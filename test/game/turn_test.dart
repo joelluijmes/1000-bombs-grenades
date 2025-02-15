@@ -31,13 +31,13 @@ void main() {
         testTurn(
           description: 'returns -1 with three skulls rolled',
           state: TurnState(CardType.diamond, List.filled(3, DieType.skull)),
-          expectedValue: Turn.deadValue,
+          expectedValue: deadValue,
         );
 
         testTurn(
           description: 'returns -1 with two skulls rolled and skull card',
           state: TurnState(CardType.skull, List.filled(2, DieType.skull)),
-          expectedValue: Turn.deadValue,
+          expectedValue: deadValue,
         );
       });
 

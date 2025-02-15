@@ -5,5 +5,9 @@ class GameState {
 
   Player currentPlayer;
 
-  GameState(this.players) : currentPlayer = players[0];
+  TurnState turnState;
+
+  // final dice = List.filled(8, Die(random));
+
+  GameState(this.players, this.turnState) : currentPlayer = players[0];
 }

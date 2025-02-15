@@ -28,15 +28,15 @@ class EndMove implements BaseMove {
 /// Base class for all possible results of a move
 abstract class BaseMoveResult {
   /// The game state after the move
-  final GameState state;
+  final GameState updatedState;
 
   /// Creates a new move result with the given game state
-  BaseMoveResult(this.state);
+  BaseMoveResult(this.updatedState);
 }
 
 /// Represents a successful move that resulted in a valid game state
 class ValidMove extends BaseMoveResult {
-  ValidMove(super.state);
+  ValidMove(super.updatedState);
 }
 
 /// Represents a failed move that resulted in an invalid game state
@@ -44,7 +44,7 @@ class InvalidMove extends BaseMoveResult {
   /// The reason why the move was invalid
   final InvalidMoves reason;
 
-  InvalidMove(super.state, this.reason);
+  InvalidMove(super.updatedState, this.reason);
 }
 
 /// Possible reasons why a move might be invalid

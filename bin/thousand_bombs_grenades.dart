@@ -9,5 +9,5 @@ void main(List<String> arguments) {
   final gameEngine = GameEngine(random);
   final ui = ConsoleUI(gameEngine);
 
-  ui.playTurn();
+  ui.playGame();
 }

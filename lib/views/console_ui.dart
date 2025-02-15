@@ -11,22 +11,33 @@ class ConsoleUI {
   /// Creates a new ConsoleUI instance with the given game engine
   ConsoleUI(this._gameEngine);
 
+  void playGame() {
+    GameState state =
+        _gameEngine.initializeGame([Player("Player 1"), Player("Player 2")]);
+
+    _printState(state);
+
+    while (true) {
+      // TODO: add stop criteria
+      state = _playTurn(state);
+    }
+  }
+
   /// Runs a single turn of the game
   /// Handles player input and displays the game state after each move
-  void playTurn() {
+  GameState _playTurn(GameState state) {
     bool turnEnded = false;
-
-    GameState state = _gameEngine.initializeGame([Player("Player 1")]);
-    final score = TurnLogic.calculateValue(state.turnState);
-    print(_prettyFormatTurn(state.turnState, score));
 
     while (!turnEnded) {
       final move = _getPlayerMove();
-      print('Player move: $move');
+
+      _printState(state);
+      print('[${state.currentPlayer.name}] Player move: $move');
 
       final moveResult = _gameEngine.handleMove(state, move);
       if (moveResult is InvalidMove) {
-        print('Invalid move, reason: ${moveResult.reason}');
+        print(
+            '[${state.currentPlayer.name}] Invalid move, reason: ${moveResult.reason}');
         continue;
       }
 
@@ -35,9 +46,10 @@ class ConsoleUI {
         break;
       }
 
-      final score = TurnLogic.calculateValue(state.turnState);
-      print(_prettyFormatTurn(state.turnState, score));
+      state = moveResult.updatedState;
     }
+
+    return state;
   }
 
   BaseMove _getPlayerMove() {
@@ -60,6 +72,14 @@ class ConsoleUI {
       final indices = parts.map((part) => int.parse(part)).toList();
       return ThrowDiceMove(indices);
     }
+  }
+
+  void _printState(GameState state) {
+    // Clear the console
+    print('\x1B[2J\x1B[0;0H');
+
+    final score = TurnLogic.calculateValue(state.turnState);
+    print(_prettyFormatTurn(state.turnState, score));
   }
 
   String _prettyFormatTurn(TurnState state, int score) {

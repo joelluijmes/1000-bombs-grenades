@@ -30,6 +30,11 @@ class GameEngine {
   /// Returns a [ValidMove] if the move was successful, or an [InvalidMove] if the move was illegal
   BaseMoveResult handleMove(GameState currentState, BaseMove move) {
     if (move is EndMove) {
+      final nextPlayer = currentState.players[
+          (currentState.players.indexOf(currentState.currentPlayer) + 1) %
+              currentState.players.length];
+
+      currentState.copyWith(currentPlayer: nextPlayer);
       return ValidMove(currentState);
     }
 
@@ -51,7 +56,8 @@ class GameEngine {
       }
 
       final turnState = currentState.turnState.copyWith(dice: faces);
-      return ValidMove(currentState.copyWith(turnState: turnState));
+      final updatedState = currentState.copyWith(turnState: turnState);
+      return ValidMove(updatedState);
     }
 
     throw Exception("Invalid move $move");

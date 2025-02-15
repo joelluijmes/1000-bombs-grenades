@@ -1,6 +1,3 @@
-/// Shorthand for list of DieType i.e., to represent rolled dice.
-// typedef Dice = List<DieType>;
-
 /// Enumeration of possible sides of the Die.
 enum DieType {
   diamond("💎"),

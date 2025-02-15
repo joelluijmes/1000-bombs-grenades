@@ -1,7 +1,8 @@
 import 'dart:math';
 
-import 'package:thousand_bombs_grenades/game/game.dart';
+import 'package:thousand_bombs_grenades/controllers/controllers.dart';
 import 'package:thousand_bombs_grenades/models/models.dart';
+import 'package:thousand_bombs_grenades/views/views.dart';
 
 void main(List<String> arguments) {
   final random = Random(1);
@@ -12,5 +13,7 @@ void main(List<String> arguments) {
   ];
 
   final gameEngine = GameEngine(players, random);
-  gameEngine.playTurn();
+  final ui = ConsoleUI(gameEngine);
+
+  ui.playTurn();
 }

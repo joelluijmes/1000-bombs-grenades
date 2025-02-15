@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../models/card_type.dart';
+import 'package:thousand_bombs_grenades/models/models.dart';
 
 /// Represents a card deck with following options:
 /// - Treasure Island: 🏝️💰

@@ -1,4 +1,4 @@
-import 'package:thousand_bombs_grenades/models/models.dart';
+import 'models.dart';
 
 class GameState {
   final List<Player> players;

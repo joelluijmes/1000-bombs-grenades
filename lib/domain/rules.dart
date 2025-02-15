@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:thousand_bombs_grenades/models/models.dart';
 
 const coinDiamondBonusValue = 100;
 const skullThreshold = 3;

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../models/models.dart';
+import 'package:thousand_bombs_grenades/models/models.dart';
 
 /// Represents a game die with six sides: 💎, 🪙, 🐒, 🦜, 🗡️, 💀
 class Die {

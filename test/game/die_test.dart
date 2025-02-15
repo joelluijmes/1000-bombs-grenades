@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:thousand_bombs_grenades/models/models.dart';
-import 'package:thousand_bombs_grenades/game/die.dart';
+import 'package:thousand_bombs_grenades/domain/die.dart';
 import 'dart:math';
 
 void main() {

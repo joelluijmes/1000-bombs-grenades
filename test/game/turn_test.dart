@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:thousand_bombs_grenades/game/game.dart';
+import 'package:thousand_bombs_grenades/domain/domain.dart';
 import 'package:thousand_bombs_grenades/models/models.dart';
 
 void testTurn({
@@ -8,7 +8,7 @@ void testTurn({
   required int expectedValue,
 }) {
   test(description, () {
-    final turn = Turn(state);
+    final turn = TurnLogic(state);
     final value = turn.calculateValue();
 
     expect(value, expectedValue);

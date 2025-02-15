@@ -22,9 +22,9 @@ class GameEngine {
   /// Handles a single move
   ///
   /// Returns true when EndMove is given.
-  GameState handleMove(GameState currentState, BaseMove move) {
+  BaseMoveResult handleMove(GameState currentState, BaseMove move) {
     if (move is EndMove) {
-      return currentState;
+      return ValidMove(currentState);
     }
 
     if (move is ThrowDiceMove) {
@@ -32,13 +32,20 @@ class GameEngine {
           ? List<DieType>.of(currentState.turnState.dice)
           : List.filled(totalDiceCount, DieType.coin);
 
-      // TODO: check valid die
       for (final index in move.indices) {
+        if (index < 1 || index > totalDiceCount) {
+          return InvalidMove(currentState, InvalidMoves.outOfBounds);
+        }
+
+        if (faces[index] == DieType.skull) {
+          return InvalidMove(currentState, InvalidMoves.rolledASkull);
+        }
+
         faces[index] = DieType.roll(_random);
       }
 
       final turnState = currentState.turnState.copyWith(dice: faces);
-      return currentState.copyWith(turnState: turnState);
+      return ValidMove(currentState.copyWith(turnState: turnState));
     }
 
     throw Exception("Invalid move $move");

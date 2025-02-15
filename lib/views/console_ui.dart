@@ -18,7 +18,12 @@ class ConsoleUI {
       final move = _getPlayerMove();
       print('Player move: $move');
 
-      state = _gameEngine.handleMove(state, move);
+      final moveResult = _gameEngine.handleMove(state, move);
+      if (moveResult is InvalidMove) {
+        print('Invalid move, reason: ${moveResult.reason}');
+        continue;
+      }
+
       if (move is EndMove) {
         turnEnded = true;
         break;

@@ -4,40 +4,43 @@ import 'package:thousand_bombs_grenades/models/models.dart';
 import 'package:thousand_bombs_grenades/domain/domain.dart';
 
 class GameEngine {
-  final CardDeck deck;
+  final Random _random;
 
-  final List<Die> dice;
+  final CardDeck _deck;
 
-  late GameState state;
+  GameEngine([Random? random])
+      : _random = random ?? Random(),
+        _deck = CardDeck(random);
 
-  GameEngine(List<Player> players, [Random? random])
-      : deck = CardDeck(random),
-        dice = List.filled(8, Die(random)) {
-    // Setup game
-    final card = deck.draw();
-    final turnState = TurnState(card, []);
+  GameState initializeGame(List<Player> players) {
+    final card = _deck.draw();
+    final turnState = TurnState.init(card);
 
-    state = GameState(players, turnState);
+    return GameState.init(players, turnState);
   }
 
   /// Handles a single move
   ///
   /// Returns true when EndMove is given.
-  bool handleMove(BaseMove move) {
+  GameState handleMove(GameState currentState, BaseMove move) {
     if (move is EndMove) {
-      return true;
+      return currentState;
     }
 
     if (move is ThrowDiceMove) {
+      final faces = currentState.turnState.dice.isNotEmpty
+          ? List<DieType>.of(currentState.turnState.dice)
+          : List.filled(totalDiceCount, DieType.coin);
+
       // TODO: check valid die
       for (final index in move.indices) {
-        dice[index].roll();
+        faces[index] = DieType.roll(_random);
       }
 
-      List<DieType> sides = dice.map((die) => die.face).toList();
-      state.turnState = TurnState(state.turnState.card, sides);
+      final turnState = currentState.turnState.copyWith(dice: faces);
+      return currentState.copyWith(turnState: turnState);
     }
 
-    return false;
+    throw Exception("Invalid move $move");
   }
 }

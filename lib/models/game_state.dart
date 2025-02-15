@@ -3,11 +3,33 @@ import 'models.dart';
 class GameState {
   final List<Player> players;
 
-  Player currentPlayer;
+  final Player currentPlayer;
 
-  TurnState turnState;
+  final TurnState turnState;
 
-  // final dice = List.filled(8, Die(random));
+  GameState({
+    required this.players,
+    required this.currentPlayer,
+    required this.turnState,
+  });
 
-  GameState(this.players, this.turnState) : currentPlayer = players[0];
+  factory GameState.init(List<Player> players, TurnState turnState) {
+    return GameState(
+      players: players,
+      currentPlayer: players.first,
+      turnState: turnState,
+    );
+  }
+
+  GameState copyWith({
+    List<Player>? players,
+    Player? currentPlayer,
+    TurnState? turnState,
+  }) {
+    return GameState(
+      players: players ?? this.players,
+      currentPlayer: currentPlayer ?? this.currentPlayer,
+      turnState: turnState ?? this.turnState,
+    );
+  }
 }

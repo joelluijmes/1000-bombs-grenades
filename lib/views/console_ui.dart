@@ -12,19 +12,20 @@ class ConsoleUI {
   void playTurn() {
     bool turnEnded = false;
 
+    GameState state = _gameEngine.initializeGame([Player("Player 1")]);
+
     while (!turnEnded) {
       final move = _getPlayerMove();
-      print('[${_gameEngine.state.currentPlayer.name}] Player move: $move');
+      print('Player move: $move');
 
-      final endMove = _gameEngine.handleMove(move);
-      if (endMove) {
+      state = _gameEngine.handleMove(state, move);
+      if (move is EndMove) {
         turnEnded = true;
         break;
       }
 
-      final turnLogic = TurnLogic(_gameEngine.state.turnState);
-      print(_prettyFormatTurn(
-          _gameEngine.state.turnState, turnLogic.calculateValue()));
+      final turnLogic = TurnLogic(state.turnState);
+      print(_prettyFormatTurn(state.turnState, turnLogic.calculateValue()));
     }
   }
 

@@ -29,8 +29,8 @@ class ConsoleUI {
         break;
       }
 
-      final turnLogic = TurnLogic(state.turnState);
-      print(_prettyFormatTurn(state.turnState, turnLogic.calculateValue()));
+      final score = TurnLogic.calculateValue(state.turnState);
+      print(_prettyFormatTurn(state.turnState, score));
     }
   }
 

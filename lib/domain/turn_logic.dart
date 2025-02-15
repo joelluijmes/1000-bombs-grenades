@@ -3,33 +3,26 @@ import 'domain.dart';
 
 /// Game logic regarding a specific turn e.g., calculate its value.
 class TurnLogic {
-  /// Lookup table which yields the points based on the amount of occurrences.
-  static const countValueTable = {
-    3: 100,
-    4: 200,
-    5: 500,
-    6: 1000,
-    7: 2000,
-    8: 4000,
-  };
-
-  final TurnState state;
-
-  TurnLogic(this.state);
-
-  int calculateValue() {
-    if (isDead()) {
+  static int calculateValue(TurnState state) {
+    if (isDead(state)) {
       return deadValue;
     }
 
-    final bonusValue = _calculateBonusValue();
-    final combinationValue = _calculateCombinationValue();
+    final bonusValue = _calculateBonusValue(state);
+    final combinationValue = _calculateCombinationValue(state);
 
     return bonusValue + combinationValue;
   }
 
+  /// Calculates whether the skull threshold has been met
+  static bool isDead(TurnState state) {
+    var skullCount = _countSkulls(state);
+
+    return skullCount >= skullThreshold;
+  }
+
   /// Calculates the value of bonus symbols
-  int _calculateBonusValue() {
+  static int _calculateBonusValue(TurnState state) {
     var bonusCount = bonusSymbols.contains(state.card.symbol) ? 1 : 0;
     bonusCount +=
         state.dice.where((side) => bonusSymbols.contains(side.symbol)).length;
@@ -38,7 +31,7 @@ class TurnLogic {
   }
 
   /// Calculates the value of regular combination symbols
-  int _calculateCombinationValue() {
+  static int _calculateCombinationValue(TurnState state) {
     final dieTypeCounts = <DieType, int>{};
     var animalCount = 0;
 
@@ -73,7 +66,7 @@ class TurnLogic {
         (cur, entry) =>
             cur + ((dieTypeValues[entry.key] ?? 0) > 0 ? entry.value : 0));
 
-    final noSkulls = _countSkulls() == 0;
+    final noSkulls = _countSkulls(state) == 0;
     if (noSkulls && contributingDiceCount + animalCount == totalDiceCount) {
       value += fullSetBonusValue;
     }
@@ -81,14 +74,7 @@ class TurnLogic {
     return value;
   }
 
-  /// Calculates whether the skull threshold has been met
-  bool isDead() {
-    var skullCount = _countSkulls();
-
-    return skullCount >= skullThreshold;
-  }
-
-  int _countSkulls() {
+  static int _countSkulls(TurnState state) {
     var skullCount = state.card == CardType.skull ? 1 : 0;
     skullCount += state.dice.where((side) => side == DieType.skull).length;
 

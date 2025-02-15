@@ -8,8 +8,7 @@ void testTurn({
   required int expectedValue,
 }) {
   test(description, () {
-    final turn = TurnLogic(state);
-    final value = turn.calculateValue();
+    final value = TurnLogic.calculateValue(state);
 
     expect(value, expectedValue);
   });

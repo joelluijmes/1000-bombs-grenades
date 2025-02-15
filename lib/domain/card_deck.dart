@@ -11,10 +11,12 @@ import 'package:thousand_bombs_grenades/models/models.dart';
 /// - Diamond: 💎
 /// - Animals: 🐒🦜
 class CardDeck {
+  /// The current cards in the deck
   final List<CardType> cards = [];
 
   final Random _random;
 
+  /// Creates a new card deck with an optional random number generator
   CardDeck([Random? random]) : _random = random ?? Random() {
     _reshuffleDeck();
   }

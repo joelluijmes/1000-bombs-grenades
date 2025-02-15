@@ -3,6 +3,9 @@ import 'domain.dart';
 
 /// Game logic regarding a specific turn e.g., calculate its value.
 class TurnLogic {
+  /// Calculates the total value of a turn based on the current state
+  /// Returns [deadValue] if the player has rolled too many skulls,
+  /// otherwise returns the sum of bonus values and combination values
   static int calculateValue(TurnState state) {
     if (isDead(state)) {
       return deadValue;

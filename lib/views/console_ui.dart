@@ -4,11 +4,15 @@ import 'package:thousand_bombs_grenades/controllers/controllers.dart';
 import 'package:thousand_bombs_grenades/domain/domain.dart';
 import 'package:thousand_bombs_grenades/models/models.dart';
 
+/// Handles the console-based user interface for the game
 class ConsoleUI {
   final GameEngine _gameEngine;
 
+  /// Creates a new ConsoleUI instance with the given game engine
   ConsoleUI(this._gameEngine);
 
+  /// Runs a single turn of the game
+  /// Handles player input and displays the game state after each move
   void playTurn() {
     bool turnEnded = false;
 
